@@ -31,9 +31,10 @@ class Person:
         '''
         Self Paramenter is a reference to the current instance of the class which is used to access different variables of the class such as name and age.
         '''
-        self.name = name
-        self.age = age
+        self.name = name  # property called named
+        self.age = age  # property called age
 
+    #Method
     def hello(self):
         print("Hi my name is", self.name, "and I am", self.age, "years old.")
 
@@ -43,3 +44,14 @@ print(p1.name)
 print(p1.age)
 print(p2.name)
 print(p2.age)
+
+p1.hello()
+p2.hello()
+
+#set the age of p1 to 20
+p1.age = 20
+#set the name of p2 to Sandra
+p2.name = "Sandra"
+
+print(p1.age)
+print(p2.name)
