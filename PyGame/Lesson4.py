@@ -20,6 +20,7 @@ Movement
 
 '''
 import pygame
+from pygame.version import PygameVersion
 pygame.init()
 
 screen_width = 500
@@ -53,6 +54,9 @@ class Ball:
                 quit()
 
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    quit()
                 # Check which arrow key was pressed and move in that direction
                 if event.key == pygame.K_UP:
                     # Decrease y_speed in y axis to move up
