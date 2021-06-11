@@ -18,7 +18,7 @@ class Ball:
         self.screen = screen
         self.x_speed = 0
         self.y_speed = 0
-        self.speed = 3
+        self.speed = 1
 
     def draw(self):
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
@@ -31,21 +31,21 @@ class Ball:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     self.y_speed -= self.speed
-                elif event.type == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN:
                      self.y_speed += self.speed
-                elif event.type == pygame.K_LEFT:
-                     self.y_speed -= self.speed
-                elif event.type == pygame.K_RIGHT:
-                     self.y_speed += self.speed
+                elif event.key == pygame.K_LEFT:
+                     self.x_speed -= self.speed
+                elif event.key == pygame.K_RIGHT:
+                     self.x_speed += self.speed
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     self.y_speed += self.speed
-                elif event.type == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN:
                      self.y_speed -= self.speed
-                elif event.type == pygame.K_LEFT:
-                     self.y_speed += self.speed
-                elif event.type == pygame.K_RIGHT:
-                     self.y_speed -= self.speed
+                elif event.key == pygame.K_LEFT:
+                     self.x_speed += self.speed
+                elif event.key == pygame.K_RIGHT:
+                     self.x_speed -= self.speed
 
 
         self.x += self.x_speed
