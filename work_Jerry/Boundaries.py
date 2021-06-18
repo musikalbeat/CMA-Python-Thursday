@@ -60,6 +60,14 @@ class Player(pygame.sprite.Sprite):
 while True:
     # If players exit game then exit game loop
     for event in pygame.event.get():
-        if event.type == pygame.QUIT
+        if event.type == pygame.QUIT:
             pygame.quit()
             quit()
+
+    all_sprite.update()
+
+    #draw/render 
+    screen.fill((0, 0, 0))
+    all_sprite.draw(screen)
+
+    pygame.display.flip()
