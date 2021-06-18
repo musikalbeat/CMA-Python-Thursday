@@ -11,7 +11,6 @@ pygame.display.set_caption("")
 white = (255,255,255)
 red = (255, 0, 0)
 
-
 class Player(pygame.sprite.Sprite):
 
     def __init__(self):
@@ -24,6 +23,11 @@ class Player(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect(center = (screen_width/2, screen_height - 30))
 
+        self.x_speed = 0
+        self.y_speed = 0
+        speed = 1
+
+    def update(self):
         self.x_speed = 0
         self.y_speed = 0
         speed = 1
@@ -44,17 +48,18 @@ class Player(pygame.sprite.Sprite):
         if self.rect.right >= screen_width:
             self.rect.right = screen_width
 
-
         if self.rect.bottom >= screen_height:
             self.rect.bottom = screen_height
-
 
         if self.rect.left <= 0:
             self.rect.left = 0
 
-
         if self.rect.top <= 0:
             self.rect.top = 0
+
+all_sprite = pygame.sprite.Group()
+player = Player()
+all_sprite.add(player)
 
             
 while True:
