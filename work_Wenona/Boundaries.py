@@ -1,4 +1,5 @@
 import pygame  # import library
+import random
 pygame.init()  # initialize pygame
 
 screen_width = 500
@@ -26,12 +27,12 @@ class Player(pygame.sprite.Sprite):
 
         self.x_speed = 0
         self.y_speed = 0
+    
+    def update(self):
+        self.x_speed = 0
+        self.y_speed = 0
+        speed = 1
 
-        def update(self):
-            self.x_speed = 0
-            self.y_speed = 0
-            speed = 1
-        
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_UP]:
             self.y_speed -= speed
@@ -60,10 +61,48 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top <= 0:
             self.rect.top = 0
 
-            
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([30, 40])
+        self.image.fill(red)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randrange(screen_width - self.rect.width)
+        self.rect.y = random.randrange(-100, -40)
+        self.y_speed = random.randrange(1, 3)
+
+    def update(self):
+        self.rect.y += self.y_speed
+        if self.rect.top > screen_height + 10:
+            self.rect.x = random.randrange(screen_width - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.y_speed = random.randrange(1, 3)
+all_sprite = pygame.sprite.Group()
+player = Player()
+all_sprite.add(player)
+
+enemies = pygame.sprite.Group()
+
+for i in range(15):
+    e = Enemy()
+    all_sprite.add(e)
+    enemies.add(e)
 while True:
     # If players exit game then exit game loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            quit()
+
+    all_sprite.update()
+
+    hits = pygame.sprite.spritecollide(player, enemies, True)
+
+    for hit in hits:
+        e = Enemy()
+        all_sprite.add(e)
+        enemies.add(e)
+
+    screen.fill((0, 0, 0))
+    all_sprite.draw(screen)
+
+    pygame.display.flip()
