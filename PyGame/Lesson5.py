@@ -4,6 +4,7 @@ Lesson 5: Boundaries and Collisions
 In this lesson you will learn how to create sprites and keep them within the screen boundaries. Moreover, we will cover new sprite methods and a new way of moving sprites around the screen with user input. Lastly, we will cover how to detect if two sprites collide with one another.
 '''
 import pygame  # import library
+import random
 pygame.init()  # initialize pygame
 
 screen_width = 500
@@ -68,9 +69,54 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top <= 0:
             self.rect.top = 0   
 
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([30, 40])
+        self.image.fill(red)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randrange(screen_width - self.rect.width)
+        self.rect.y = random.randrange(-100, -40)
+        self.y_speed = random.randrange(1, 3)
+
+    def update(self):
+        self.rect.y += self.y_speed
+        if self.rect.top > screen_height + 10:
+            self.rect.x = random.randrange(screen_width - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.y_speed = random.randrange(1, 3)
+
+all_sprite = pygame.sprite.Group()
+player = Player()
+all_sprite.add(player)
+
+enemies = pygame.sprite.Group()
+
+for i in range(5):
+    e = Enemy()
+    all_sprite.add(e)
+    enemies.add(e)
+
 while True:
     # If players exit game then exit game loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
+
+    all_sprite.update()
+
+    hits = pygame.sprite.spritecollide(player, enemies, True)
+
+    # Spawn new enemy for each one that gets deleted
+    for hit in hits:
+        e = Enemy()
+        all_sprite.add(e)
+        enemies.add(e)
+
+    # Draw/Render
+    screen.fill((0,0,0))
+    all_sprite.draw(screen)
+
+    # Mandatory otherwise sprites won't show
+    pygame.display.flip()
