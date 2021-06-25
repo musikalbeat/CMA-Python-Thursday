@@ -1,6 +1,9 @@
 import pygame  # import library
 import random
+from os import path
 pygame.init()  # initialize pygame
+
+img_dir = path.join(path.dirname(__file__), 'img')
 
 screen_width = 500
 screen_height = 500
@@ -11,7 +14,21 @@ pygame.display.set_caption("")
 
 white = (255, 255, 255)
 red = (255, 0, 0)
+black = (0, 0, 0)
 
+# Load all game graphics
+bg = pygame.image.load(path.join(img_dir, "Full-Background.png")).convert()
+bg_rect = bg.get_rect(center=(screen_width/2, -100))
+player_img = pygame.image.load(path.join(img_dir, "basket.png")).convert()
+enemy_img = pygame.image.load(path.join(img_dir, "egg1.png")).convert()
+
+font_name = pygame.font.match_font('arial')
+def draw_text(surf, text, size, x, y):
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, black)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
 
 class Player(pygame.sprite.Sprite):
 
@@ -19,23 +36,23 @@ class Player(pygame.sprite.Sprite):
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
 
-        # Create an image of the block and fill with color
-        self.image = pygame.Surface([30, 40])
-        self.image.fill(white)
+        # Set player image to basket image
+        self.image = player_img
+        # Get rid of black outline
+        self.image.set_colorkey((0,0,0))
 
         # Create rect object that has dimension of the image
-        self.rect = self.image.get_rect(
-            center=(screen_width/2, screen_height - 30))
+        self.rect = self.image.get_rect(center = (screen_width/2, screen_height - 30))
 
         # Initialize speed on x and y for sprite
         self.x_speed = 0
         self.y_speed = 0
-
+    
     def update(self):
         # Values to 0 other sprite fly off screen
         self.x_speed = 0
         self.y_speed = 0
-        speed = 1
+        speed = 3
 
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_UP]:
@@ -64,26 +81,26 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = 0
 
         if self.rect.top <= 0:
-            self.rect.top = 0
-
+            self.rect.top = 0   
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface([30, 40])
-        self.image.fill(red)
+        self.image = pygame.transform.scale(enemy_img, (42, 48))
+        self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(screen_width - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
-        self.y_speed = random.randrange(1, 3)
+        self.minSpeed = 4
+        self.maxSpeed = 5
+        self.y_speed = random.randrange(self.minSpeed, self.maxSpeed)
 
     def update(self):
         self.rect.y += self.y_speed
         if self.rect.top > screen_height + 10:
             self.rect.x = random.randrange(screen_width - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
-            self.y_speed = random.randrange(1, 3)
-
+            self.y_speed = random.randrange(self.minSpeed, self.maxSpeed)
 
 all_sprite = pygame.sprite.Group()
 player = Player()
@@ -95,6 +112,9 @@ for i in range(5):
     e = Enemy()
     all_sprite.add(e)
     enemies.add(e)
+
+# Score Variable
+score = 0
 
 while True:
     # If players exit game then exit game loop
@@ -109,13 +129,16 @@ while True:
 
     # Spawn new enemy for each one that gets deleted
     for hit in hits:
+        score += 1000000000000000000000000000000000000 # Update score here
         e = Enemy()
         all_sprite.add(e)
         enemies.add(e)
 
     # Draw/Render
-    screen.fill((0, 0, 0))
+    screen.fill((0,0,0))
+    screen.blit(bg, bg_rect)
     all_sprite.draw(screen)
+    draw_text(screen, str(score), 18, screen_width/2, 10)
 
     # Mandatory otherwise sprites won't show
     pygame.display.flip()
