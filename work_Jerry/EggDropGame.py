@@ -129,7 +129,7 @@ while True:
 
     # Spawn new enemy for each one that gets deleted
     for hit in hits:
-        score += 1000000000000000000000000000000000000 # Update score here
+        score += 1000000000000000000000000000000000 # Update score here
         e = Enemy()
         all_sprite.add(e)
         enemies.add(e)
