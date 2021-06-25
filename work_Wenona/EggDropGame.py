@@ -53,7 +53,7 @@ class Player(pygame.sprite.Sprite):
         # Values to 0 other sprite fly off screen
         self.x_speed = 0
         self.y_speed = 0
-        speed = 1
+        speed = 7
 
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_UP]:
@@ -130,7 +130,7 @@ while True:
 
     # Spawn new enemy for each one that gets deleted
     for hit in hits:
-        score += 1
+        score += 8000000
         e = Enemy()
         all_sprite.add(e)
         enemies.add(e)
