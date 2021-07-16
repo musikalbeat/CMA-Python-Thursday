@@ -1,3 +1,4 @@
+from os import path
 import pygame  # import library
 pygame.init()  # initialize pygame
 
@@ -18,7 +19,7 @@ font_name = pygame.font.match_font('arial')
 
 sound_dir = path.join(path.dirname(__file__), 'sounds')
 
-applause = path.join(sound_dir, "pplause.wav")
+applause = path.join(sound_dir, "applause.wav")
 burp = path.join(sound_dir, "burp.mp3")
 alarm = path.join(sound_dir, "alarm.mp3")
 
@@ -53,8 +54,8 @@ class Button():
         return False
 
 alarmButton = Button(red, 50, 50, 100, 100, "Alarm")
-alarmButton = Button(blue, 200, 50, 100, 100, "Burp")
-alarmButton = Button(pink, 350, 50, 100, 100, "Applause")
+burpButton = Button(blue, 200, 50, 100, 100, "Burp")
+applauseButton = Button(pink, 350, 50, 100, 100, "Applause")
 
 
 
@@ -65,7 +66,7 @@ while True:
             pygame.quit()
             quit()
 
-        pos = pygam.mouse.get_pos()
+        pos = pygame.mouse.get_pos()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if alarmButton.inBoundries(pos):
