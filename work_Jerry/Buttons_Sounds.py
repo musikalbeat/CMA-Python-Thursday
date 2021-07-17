@@ -39,15 +39,15 @@ class Button():
     def draw(self, screen, outlineColor = None):
         if outlineColor:
             pygame.draw.rect(screen, outlineColor, (self.x -2, self.y - 2, self.width +4, self.height +4))
-            pygame.draw.rect(screen, outlineColor, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
 
         if self.text != '':
-            font = pygame.Font(font_name, 18)
-            text_surface = fontrender(self.text, True, black)
+            font = pygame.font.Font(font_name, 18)
+            text_surface = font.render(self.text, True, black)
             screen.blit(text_surface, (self.x + (self.width/2 - text_surface.get_width()/2),
-                                        self.x + (self.width/2 - text_surface.get_width()/2)))
+                                        self.y + (self.width/2 - text_surface.get_height()/2)))
 
-    def inboundries(self):
+    def inBoundries(self, pos):
         if pos[0] > self.x and pos[0] < self.x + self.width:
             if pos[1] > self.y and pos[1] < self.y + self.height:
                 return True
@@ -74,7 +74,7 @@ while True:
                 alarmSound.play(0, 800)
             if burpButton.inBoundries(pos):
                 print("Blue button clicked")
-                burpButton.play()
+                burpSound.play()
             if applauseButton.inBoundries(pos):
                 print("Pink button clicked")
                 applauseSound.play(0, 1000)
@@ -83,4 +83,4 @@ while True:
     burpButton.draw (screen, white)
     applauseButton.draw (screen, white)
     
-pygame.display.update()
+    pygame.display.update()
